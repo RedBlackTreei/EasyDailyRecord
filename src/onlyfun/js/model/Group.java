@@ -7,7 +7,7 @@ package onlyfun.js.model;
  */
 public class Group {
 	private Long id;
-	//小组名称
+	//小组名称--
 	private String groupName;
 	private Long departmentId;
 }
