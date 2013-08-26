@@ -12,19 +12,33 @@ public class Employee {
 	private String sex;
 	private String email;
 	//权限
-	private String power;
+	private int power;
 	private Long groupId;
+	private String username;
+	private String password;
 	
+	public String getUsername() {
+		return username;
+	}
+	public void setUsername(String username) {
+		this.username = username;
+	}
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
+	}
 	public Long getGroupId() {
 		return groupId;
 	}
 	public void setGroupId(Long groupId) {
 		this.groupId = groupId;
 	}
-	public String getPower() {
+	public int getPower() {
 		return power;
 	}
-	public void setPower(String power) {
+	public void setPower(int power) {
 		this.power = power;
 	}
 	public Long getId() {
