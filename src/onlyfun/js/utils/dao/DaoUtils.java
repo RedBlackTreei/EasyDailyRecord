@@ -1,6 +1,7 @@
-package onlyfun.js.util;
+package onlyfun.js.utils.dao;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import javax.naming.Context;
@@ -8,11 +9,10 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
-import com.mysql.jdbc.PreparedStatement;
 
 public class DaoUtils {
 	private static Connection conn = null;
-	private PreparedStatement pstmp = null;
+	private static PreparedStatement pstmt = null;
 	
 	/**
 	 *@Description : 获取数据库连接
@@ -30,5 +30,14 @@ public class DaoUtils {
 			e.printStackTrace();
 		}
 		return conn;
+	}
+	
+	public static PreparedStatement getPreparedStatement(String sql) {
+		try {
+			pstmt = conn.prepareStatement(sql);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return pstmt;
 	}
 }

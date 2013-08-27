@@ -1,4 +1,4 @@
-package onlyfun.js.util;
+package onlyfun.js.utils.dao;
 
 import java.sql.Connection;
 import java.sql.SQLException;
