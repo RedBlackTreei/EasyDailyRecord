@@ -1,7 +1,13 @@
 package onlyfun.js.dao;
 
+import java.util.List;
+
 public interface BaseDao {
-	public void save(Object obj);
-	public void deleteById(Long id);
-	public void delete(Object obj);
+	public int save(Object obj);
+	public int deleteById(Long id);
+	public int delete(Object obj);
+	public int update(Object obj);
+	public Object findById(Long id);
+	public List<Object> findByExample(Object ojb);
+	public List<Object> findAll();
 }

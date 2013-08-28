@@ -34,6 +34,7 @@ public class DaoUtils {
 	
 	public static PreparedStatement getPreparedStatement(String sql) {
 		try {
+			conn = getConnection();
 			pstmt = conn.prepareStatement(sql);
 		} catch (SQLException e) {
 			e.printStackTrace();

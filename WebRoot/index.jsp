@@ -1,5 +1,7 @@
 <%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
-<%@ page import="onlyfun.js.util.TestDao" %>
+<%@ page import="onlyfun.js.utils.dao.DaoUtils" %>
+<%@ page import="onlyfun.js.dao.impl.BaseDaoImpl" %>
+<%@ page import="onlyfun.js.model.Company" %>
 <%
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
@@ -23,8 +25,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   
   <body>&nbsp; 
     <%
-    	TestDao t = new TestDao();
-    	t.testJNDI();
+    	BaseDaoImpl bd = new BaseDaoImpl();
+    	Company c = new Company();
+    	c.setDescription("Justin");
+    	c.setName("JS");
+    	int rows = bd.save(c);
+    	out.println("rows = " + rows);
      %>
   </body>
 </html>
