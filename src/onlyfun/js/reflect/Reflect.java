@@ -27,8 +27,8 @@ public class Reflect {
 	 */
 	public String getSaveSql(Object obj) {
 		Class<?> object = obj.getClass();
-		String className = object.getName();
-		String tableName = this.getTableName(className);
+		String className = object.getSimpleName();
+		String tableName = className.toLowerCase();
 		String sqlHead = "insert into " + tableName + "(";
 		Method[] methods = this.getMethods(object);
 		if(StringUtils.isEmpty(tableName)) {
@@ -58,6 +58,25 @@ public class Reflect {
 			}
 		}
 		String sql = this.generateSql(sqlHead, fieldNames, fieldValues);
+		return sql;
+	}
+	
+	public String getSaveSql2(Object obj) {
+		Class<?> cls = obj.getClass();
+		Field[] fields = cls.getDeclaredFields();
+		String tableName = cls.getSimpleName();
+		StringBuilder fieldNames = new StringBuilder();
+		StringBuilder parameters = new StringBuilder();
+		for(int i = 0; i< fields.length; i++) {
+			if(i < fields.length - 1) {
+				fieldNames.append(fields[i].getName() + ", ");
+				parameters.append("?, ");
+			} else {
+				fieldNames.append(fields[i].getName());
+				parameters.append("?");
+			}
+		}
+		String sql = String.format("INSERT INTO %s(%s) values(%s)", tableName,fieldNames,parameters);
 		return sql;
 	}
 	
@@ -100,19 +119,6 @@ public class Reflect {
 		return methods;
 	}
 	
-	/**
-	 *@Description : 获取表名，一般情况下表名同Model名称相同
-	 *@param className ：表对应Model的全名，如：onlyfun.js.model.Company
-	 *@return : String,表名
-	 */
-	private String getTableName(String className) {
-		if(StringUtils.isEmpty(className)) {
-			return StringUtils.EMPTY;
-		}
-		String tableName = className.substring(className.lastIndexOf(".") + 1, className.length()).toLowerCase();
-		return tableName;
-	}
-
 	/**
 	 *@Description : 获取字段名
 	 *@param fields ：声明的字段

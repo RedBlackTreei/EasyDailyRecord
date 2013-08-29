@@ -1,7 +1,10 @@
 <%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
+<%@ page import="java.sql.Date" %>
 <%@ page import="onlyfun.js.utils.dao.DaoUtils" %>
 <%@ page import="onlyfun.js.dao.impl.BaseDaoImpl" %>
 <%@ page import="onlyfun.js.model.Company" %>
+<%@ page import="onlyfun.js.model.Record" %>
+<%@ page import="java.text.SimpleDateFormat" %>
 <%
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
@@ -25,11 +28,20 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   
   <body>&nbsp; 
     <%
+    	SimpleDateFormat f=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
     	BaseDaoImpl bd = new BaseDaoImpl();
-    	Company c = new Company();
-    	c.setDescription("Justin");
-    	c.setName("JS");
-    	int rows = bd.save(c);
+    	Record r = new Record();
+    	java.util.Date date = new java.util.Date();
+    	Date d = new Date(date.getTime());
+    	r.setBeginDate(d);
+    	r.setCompletionDesc("Justin");
+    	r.setEmployeeId(1L);
+    	r.setEndDate(d);
+    	r.setIsFinished(true);
+    	r.setNormalHours(4.0);
+    	r.setOverTimeHours(2.0);
+    	r.setPlanType("项目沟通");
+    	int rows = bd.save(r);
     	out.println("rows = " + rows);
      %>
   </body>

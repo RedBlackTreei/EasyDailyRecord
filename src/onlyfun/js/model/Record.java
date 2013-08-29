@@ -1,6 +1,6 @@
 package onlyfun.js.model;
 
-import java.util.Date;
+import java.sql.Date;
 
 /**
  * @Description : 日志

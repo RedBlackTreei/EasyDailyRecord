@@ -11,7 +11,7 @@ public class Test {
 		Company c = new Company();
 		c.setDescription("description");
 		c.setName("name");
-		String sql = r.getSaveSql(c);
+		String sql = r.getSaveSql2(c);
 		System.out.println(sql);
 	}
 }
