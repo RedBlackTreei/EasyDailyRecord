@@ -1,5 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
 <%@ page import="java.sql.Date" %>
+<%@ page import="java.sql.Timestamp"  %>
 <%@ page import="onlyfun.js.utils.dao.DaoUtils" %>
 <%@ page import="onlyfun.js.dao.impl.BaseDaoImpl" %>
 <%@ page import="onlyfun.js.model.Company" %>
@@ -26,17 +27,18 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	-->
   </head>
   
-  <body>&nbsp; 
+  <body>i&nbsp;  
     <%
     	SimpleDateFormat f=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
     	BaseDaoImpl bd = new BaseDaoImpl();
     	Record r = new Record();
     	java.util.Date date = new java.util.Date();
     	Date d = new Date(date.getTime());
-    	r.setBeginDate(d);
+    	Timestamp tt = new Timestamp(date.getTime());
+    	r.setBeginDate(tt);
     	r.setCompletionDesc("Justin");
     	r.setEmployeeId(1L);
-    	r.setEndDate(d);
+    	r.setEndDate(tt);
     	r.setIsFinished(true);
     	r.setNormalHours(4.0);
     	r.setOverTimeHours(2.0);

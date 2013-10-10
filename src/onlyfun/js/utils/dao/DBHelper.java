@@ -9,7 +9,6 @@ import java.util.List;
 import javax.servlet.jsp.jstl.sql.Result;
 import javax.servlet.jsp.jstl.sql.ResultSupport;
 
-import org.apache.commons.lang.StringUtils;
 
 public class DBHelper {
 	private Connection con;

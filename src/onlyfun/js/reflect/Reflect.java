@@ -9,14 +9,10 @@ import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 
 public class Reflect {
-
-	private String cls;
-
-	public Reflect(String cls) {
-		this.cls = cls;
-	}
 	
-	public Reflect() {
+	private static Reflect reflect = null;
+	
+	private Reflect() {
 		
 	}
 	
@@ -45,7 +41,11 @@ public class Reflect {
 					Object fieldValue = method.invoke(obj);
 					if(fieldValue instanceof String) {
 						fieldValues.add("\"" + fieldValue + "\"");
-					} else {
+					} else if(fieldValue instanceof java.sql.Timestamp) {
+						fieldValues.add("\"" + fieldValue + "\"");
+					} else if(fieldValue instanceof java.sql.Date) {
+						fieldValues.add("\"" + fieldValue + "\"");
+					}else {
 						fieldValues.add(fieldValue);
 					}
 				} catch (IllegalArgumentException e) {
@@ -59,6 +59,51 @@ public class Reflect {
 		}
 		String sql = this.generateSql(sqlHead, fieldNames, fieldValues);
 		return sql;
+	}
+	
+	/**
+	 *@Description : 根据对象删除数据
+	 *@param obj ： 删除对象
+	 *@return : String
+	 */
+	public String getDeleteSql(Object obj) {
+		Long id = getEntityId(obj); 
+		if(id == 0L) {
+			return StringUtils.EMPTY;
+		}
+		String tableName = obj.getClass().getName();
+		String sql = "delete from " + tableName + " where id = " + id;
+		return sql;
+	}
+	
+	/**
+	 *@Description : 根据id删除数据
+	 *@param cls ：删除对象
+	 *@param id
+	 *@return : String
+	 */
+	public String getDeleteSql(Class<?> cls, Long id) {
+		if(id == 0L) {
+			return StringUtils.EMPTY;
+		}
+		String tableName = cls.getName();
+		String sql = "delete from " + tableName + " where id = " + id;
+		return sql;
+	}
+	
+	private Long getEntityId(Object obj) {
+		Long id = 0L;
+		if(obj == null || StringUtils.isEmpty(obj.toString())) {
+			return 0L;
+		}
+		try {
+			Field field = obj.getClass().getDeclaredField("id");
+			field.setAccessible(true);
+			id = (Long)field.get(obj);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} 
+		return id;
 	}
 	
 	public String getSaveSql2(Object obj) {
@@ -119,30 +164,10 @@ public class Reflect {
 		return methods;
 	}
 	
-	/**
-	 *@Description : 获取字段名
-	 *@param fields ：声明的字段
-	 *@return : String[]，字段名数组
-	 */
-	public String[] getFieldNames(Field[] fields) {
-		String[] names = new String[fields.length];
-		for (int i = 0; i < fields.length; i++) {
-			names[i] = fields[i].getName();
+	public static synchronized Reflect getInstance() {
+		if(reflect == null) {
+			return new Reflect();
 		}
-		return names;
-	}
-	
-	public Class<?> getCls() {
-		Class<?> demon = null;
-		try {
-			demon = Class.forName(cls);
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-		return demon;
-	}
-
-	public void setCls(String cls) {
-		this.cls = cls;
+		return reflect;
 	}
 }

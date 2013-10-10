@@ -1,6 +1,6 @@
 package onlyfun.js.model;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 
 /**
  * @Description : 日志
@@ -11,7 +11,7 @@ public class Record {
 	private Long id;
 	private Long employeeId;
 	//提交日期
-	private Date submitDate;
+	private Timestamp submitDate;
 	//项目简称 --project abbreviation
 	private String projectAbbr;
 	//项目阶段
@@ -23,9 +23,9 @@ public class Record {
 	//任务描述
 	private String taskDesc;
 	//开始日期
-	private Date beginDate;
+	private Timestamp beginDate;
 	//结束日期
-	private Date endDate;
+	private Timestamp endDate;
 	//正常工时
 	private Double normalHours;
 	//加班工时
@@ -47,10 +47,10 @@ public class Record {
 	public void setEmployeeId(Long employeeId) {
 		this.employeeId = employeeId;
 	}
-	public Date getSubmitDate() {
+	public Timestamp getSubmitDate() {
 		return submitDate;
 	}
-	public void setSubmitDate(Date submitDate) {
+	public void setSubmitDate(Timestamp submitDate) {
 		this.submitDate = submitDate;
 	}
 	public String getProjectAbbr() {
@@ -83,16 +83,16 @@ public class Record {
 	public void setTaskDesc(String taskDesc) {
 		this.taskDesc = taskDesc;
 	}
-	public Date getBeginDate() {
+	public Timestamp getBeginDate() {
 		return beginDate;
 	}
-	public void setBeginDate(Date beginDate) {
+	public void setBeginDate(Timestamp beginDate) {
 		this.beginDate = beginDate;
 	}
-	public Date getEndDate() {
+	public Timestamp getEndDate() {
 		return endDate;
 	}
-	public void setEndDate(Date endDate) {
+	public void setEndDate(Timestamp endDate) {
 		this.endDate = endDate;
 	}
 	public Double getNormalHours() {
