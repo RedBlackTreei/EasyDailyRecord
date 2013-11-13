@@ -16,7 +16,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <head>
     <base href="<%=basePath%>">
     
-    <title>My JSP 'index.jsp' starting page</title>
+    <title>Index</title>
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
 	<meta http-equiv="expires" content="0">    
@@ -29,22 +29,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   
   <body>i&nbsp;  
     <%
-    	SimpleDateFormat f=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-    	BaseDaoImpl bd = new BaseDaoImpl();
-    	Record r = new Record();
-    	java.util.Date date = new java.util.Date();
-    	Date d = new Date(date.getTime());
-    	Timestamp tt = new Timestamp(date.getTime());
-    	r.setBeginDate(tt);
-    	r.setCompletionDesc("Justin");
-    	r.setEmployeeId(1L);
-    	r.setEndDate(tt);
-    	r.setIsFinished(true);
-    	r.setNormalHours(4.0);
-    	r.setOverTimeHours(2.0);
-    	r.setPlanType("项目沟通");
-    	int rows = bd.save(r);
-    	out.println("rows = " + rows);
+    	
      %>
   </body>
 </html>
