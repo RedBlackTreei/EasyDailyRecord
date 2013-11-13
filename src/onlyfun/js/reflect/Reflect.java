@@ -3,12 +3,15 @@ package onlyfun.js.reflect;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 
-public class Reflect {
+public class Reflect implements IReflect {
 	
 	private static Reflect reflect = null;
 	
@@ -24,7 +27,7 @@ public class Reflect {
 	public String getSaveSql(Object obj) {
 		Class<?> object = obj.getClass();
 		String className = object.getSimpleName();
-		String tableName = className.toLowerCase();
+		String tableName = "record." + className.toLowerCase();
 		String sqlHead = "insert into " + tableName + "(";
 		Method[] methods = this.getMethods(object);
 		if(StringUtils.isEmpty(tableName)) {
@@ -71,7 +74,7 @@ public class Reflect {
 		if(id == 0L) {
 			return StringUtils.EMPTY;
 		}
-		String tableName = obj.getClass().getName();
+		String tableName = "record." + obj.getClass().getSimpleName();
 		String sql = "delete from " + tableName + " where id = " + id;
 		return sql;
 	}
@@ -82,13 +85,64 @@ public class Reflect {
 	 *@param id
 	 *@return : String
 	 */
+	@Override
 	public String getDeleteSql(Class<?> cls, Long id) {
 		if(id == 0L) {
 			return StringUtils.EMPTY;
 		}
-		String tableName = cls.getName();
+		String tableName = "record." + cls.getSimpleName();
 		String sql = "delete from " + tableName + " where id = " + id;
 		return sql;
+	}
+	
+	@Override
+	public String getQuerySql(Class<?> cls, Long id) {
+		if(id == 0L) {
+			return StringUtils.EMPTY;
+		}
+		String tableName = "record." + cls.getSimpleName();
+		String sql = "select * from " + tableName + " where id = " + id;
+		return sql;
+	}
+	
+	public List<Object> toObjectList(ResultSet rs, Class<?> cls) {
+		List<Object> objList = new ArrayList<Object>();
+		Field[] fields = cls.getDeclaredFields();
+		try {
+			while(rs.next()) {
+				Object obj = null;
+				for(Field field : fields) {
+					String name = field.getName();
+					Object value = rs.getObject(name);
+					obj = cls.newInstance();
+					field.set(obj, value);
+				}
+				objList.add(obj);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		}
+		return objList;
+	}
+	
+	public Object toObject(ResultSet rs, Class<?> cls) {
+		List<Object> objList = toObjectList(rs, cls);
+		if(objList != null && objList.size() > 0) {
+			return objList.get(0);
+		}
+		return null;
+	}
+	
+	public Object toObject(Class<?> cls) {
+		Field[] fields = cls.getDeclaredFields();
+		for(Field field : fields) {
+			System.out.println(field.getName());
+		}
+		return null;
 	}
 	
 	private Long getEntityId(Object obj) {
