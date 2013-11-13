@@ -1,18 +1,20 @@
 package onlyfun.js.dao.impl;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-
 import onlyfun.js.dao.BaseDao;
-import onlyfun.js.reflect.Reflect;
+import onlyfun.js.reflect.IReflect;
+import onlyfun.js.reflect.ReflectProxy;
 import onlyfun.js.utils.dao.DaoUtils;
 
 public class BaseDaoImpl implements BaseDao {
 	
-	Reflect reflect = Reflect.getInstance();
+	
+	IReflect reflect = ReflectProxy.getInstance();
 	
 	@Override
 	public int save(Object obj) {
@@ -29,7 +31,7 @@ public class BaseDaoImpl implements BaseDao {
 
 	@Override
 	public int deleteById(Class<?> cls,Long id) {
-		String sql = reflect.getDeleteSql(id);
+		String sql = reflect.getDeleteSql(cls, id);
 		if(sql.equals(StringUtils.EMPTY)) {
 			return 0;
 		}
@@ -65,20 +67,29 @@ public class BaseDaoImpl implements BaseDao {
 	}
 
 	@Override
-	public Object findById(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+	public Object findById(Class<?> cls, Long id) {
+		Object obj = null;
+		String sql = reflect.getQuerySql(cls, id);
+		if(sql.equals(StringUtils.EMPTY)) {
+			return null;
+		}
+		PreparedStatement pstmt = DaoUtils.getPreparedStatement(sql);
+		try {
+			ResultSet rs = pstmt.executeQuery();
+			obj = reflect.toObject(rs, cls);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return obj;
 	}
 
 	@Override
 	public List<Object> findByExample(Object ojb) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public List<Object> findAll() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
